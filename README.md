@@ -80,4 +80,8 @@ Note : "Same seed for everything" will accentuate the samplers noise. Euler A wi
 
 ## Example
 
+Unedited output with prompt switching/zoom/sine variations/same seed per prompt.
+
+"What you will see is 100% artificial" and birth to death related prompts.
+
 https://user-images.githubusercontent.com/15731540/194624678-544e52db-88d1-429e-b4f7-2a2a1e35cc60.mp4
