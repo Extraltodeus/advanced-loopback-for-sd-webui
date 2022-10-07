@@ -89,4 +89,4 @@ https://user-images.githubusercontent.com/15731540/194624678-544e52db-88d1-429e-
 
 ### End note
 
-For now the script does not output a video immediatly. Just the images. I personnaly use ffmpeg to put it all together.
+For now the script does not output a video immediatly. Just the images. I personnaly use ffmpeg to put it all together but you can go check on the [custom scripts page](https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki/Custom-Scripts) as there is at least one that allows to do that with the webui (even though I haven't tested it).
