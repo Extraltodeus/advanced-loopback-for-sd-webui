@@ -20,7 +20,7 @@ The scripts UI looks like this and will show up in your img2img tab :
 
 - Use first image colors (custom color correction)
 
-This feature will use the colors from the init image instead of the last generated one like the one already availaible does. This allows to avoid loosing colors when using the zoom feature.
+This feature will use the colors from the init image instead of the last generated one (like the one already availaible does). This allows to avoid loosing colors when using the zoom feature.
 
 - Direction X/Y
 
