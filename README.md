@@ -1,4 +1,4 @@
 # advanced-loopback-for-sd-webui
 
-<video src="https://raw.githubusercontent.com/Extraltodeus/advanced-loopback-for-sd-webui/main/example.mp4"></video>
-[![IMAGE ALT TEXT](http://img.youtube.com/vi/YOUTUBE_VIDEO_ID_HERE/0.jpg)](https://raw.githubusercontent.com/Extraltodeus/advanced-loopback-for-sd-webui/main/example.mp4 "Video Title")
+https://user-images.githubusercontent.com/15731540/194624678-544e52db-88d1-429e-b4f7-2a2a1e35cc60.mp4
+
