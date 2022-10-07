@@ -89,4 +89,4 @@ https://user-images.githubusercontent.com/15731540/194624678-544e52db-88d1-429e-
 
 ### End note
 
-For now the script does not output a video immediatly. Just the images. I personnaly use ffmpeg to put it all together. A dedicated script could come.
+For now the script does not output a video immediatly. Just the images. I personnaly use ffmpeg to put it all together.
