@@ -85,3 +85,8 @@ Unedited output with prompt switching/zoom/sine variations/same seed per prompt.
 "What you will see is 100% artificial" and birth to death related prompts.
 
 https://user-images.githubusercontent.com/15731540/194624678-544e52db-88d1-429e-b4f7-2a2a1e35cc60.mp4
+
+
+### End note
+
+For now the script does not output a video immediatly. Just the images. I personnaly use ffmpeg to put it all together. A dedicated script could come.
