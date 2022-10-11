@@ -135,7 +135,7 @@ class Script(scripts.Script):
                 y = remap_range(x,0,range,0,1)
                 y = y ** amplify
                 z = sin((y+phase_diff/2)*pi)
-            return z
+                return z
 
         processing.fix_seed(p)
         batch_count = p.n_iter
