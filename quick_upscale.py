@@ -1,21 +1,4 @@
 
-# def run(p, factor):
-#     def simple_upscale(img, factor):
-#         w, h = img.size
-#         w = int(w * factor)
-#         h = int(h * factor)
-#         return img.resize((w, h), Image.LANCZOS)
-#
-#     proc = process_images(p)
-#     basename = ""
-#
-#     for i in range(len(proc.images)):
-#         proc.images[i] = simple_upscale(proc.images[i], factor)
-#         images.save_image(proc.images[i], p.outpath_samples, basename, proc.seed + i, proc.prompt, opts.samples_format, info= proc.info, p=p)
-#
-#     return proc
-# run(p, 2)
-
 import math
 import os
 import sys
@@ -51,6 +34,7 @@ class Script(scripts.Script):
         p.do_not_save_samples = True
         output_images = []
         for batch_no in range(state.job_count):
+            print(f"{p.seed} : {p.prompt}")
             proc = process_images(p)
             infotexts.append(proc.info)
             proc.images[0] = simple_upscale(proc.images[0], upscale_factor)
