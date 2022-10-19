@@ -27,7 +27,7 @@ class Script(scripts.Script):
             w, h = img.size
             w = int(w * upscale_factor)
             h = int(h * upscale_factor)
-            return img.resize((w, h), Image.LANCZOS)
+            return img.resize((w, h), Image.Resampling.LANCZOS)
 
         state.job_count = p.n_iter
         p.n_iter = 1
