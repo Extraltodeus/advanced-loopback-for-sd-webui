@@ -129,13 +129,13 @@ class Script(scripts.Script):
             return finalValue;
 
         def get_sin_steps(i,amplify,phase_diff=0):
-            if i >= denoising_strength_first_image :
-                range = (denoising_strength_last_image - denoising_strength_first_image)
-                x = i % (range)
-                y = remap_range(x,0,range,0,1)
-                y = y ** amplify
-                z = sin((y+phase_diff/2)*pi)
-                return z
+            i -= denoising_strength_first_image
+            range = (denoising_strength_last_image - denoising_strength_first_image)
+            x = i % (range)
+            y = remap_range(x,0,range,0,1)
+            y = y ** amplify
+            z = sin((y+phase_diff/2)*pi)
+            return z
 
         processing.fix_seed(p)
         batch_count = p.n_iter
