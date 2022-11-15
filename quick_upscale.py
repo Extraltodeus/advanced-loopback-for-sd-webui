@@ -34,7 +34,7 @@ class Script(scripts.Script):
         p.do_not_save_samples = True
         output_images = []
         for batch_no in range(state.job_count):
-            print(f"\nJob : {batch_no}/{state.job_count}\nSeed : {p.seed}\nPrompt : {p.prompt}")
+#             print(f"\nJob : {batch_no}/{state.job_count}\nSeed : {p.seed}\nPrompt : {p.prompt}")
             proc = process_images(p)
             infotexts.append(proc.info)
             proc.images[0] = simple_upscale(proc.images[0], upscale_factor)
