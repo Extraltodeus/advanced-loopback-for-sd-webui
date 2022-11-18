@@ -14,21 +14,32 @@ from PIL import Image
 from modules.shared import opts, cmd_opts, state
 
 class Script(scripts.Script):
-    alwayson = True
     def title(self):
-        return "Lanczos simple upscale"
-      
-    def show(self, is_img2img):
-        return scripts.AlwaysVisible
+        return "Lanczos quick upscale"
 
     def ui(self, is_img2img):
-        simple_upscale_factor = gr.Slider(minimum=1, maximum=4, step=0.1, label='Upscale factor', value=2)
-        return [simple_upscale_factor]
-      
-    def batch_postprocess(self, p, image, simple_upscale_factor, **batch_properties):
-        if simple_upscale_factor > 1:
-            w, h = image.size
-            w = int(w * simple_upscale_factor)
-            h = int(h * simple_upscale_factor)
-            image = image.resize((w, h), Image.Resampling.LANCZOS)
-        images.save_image(image, p.outpath_samples, "", batch_properties['seed'], batch_properties['prompt'], opts.samples_format, info=batch_properties['info'], p=p)
+        upscale_factor = gr.Slider(minimum=1, maximum=4, step=0.1, label='Upscale factor', value=2)
+        return [upscale_factor]
+
+    def run(self, p, upscale_factor):
+        infotexts = []
+        def simple_upscale(img, upscale_factor):
+            w, h = img.size
+            w = int(w * upscale_factor)
+            h = int(h * upscale_factor)
+            return img.resize((w, h), Image.Resampling.LANCZOS)
+
+        state.job_count = p.n_iter
+        p.n_iter = 1
+        p.do_not_save_samples = True
+        output_images = []
+        for batch_no in range(state.job_count):
+#             print(f"\nJob : {batch_no}/{state.job_count}\nSeed : {p.seed}\nPrompt : {p.prompt}")
+            proc = process_images(p)
+            infotexts.append(proc.info)
+            proc.images[0] = simple_upscale(proc.images[0], upscale_factor)
+            images.save_image(proc.images[0], p.outpath_samples, "", proc.seed, proc.prompt, opts.samples_format, info= proc.info, p=p)
+            output_images += proc.images
+            p.seed = proc.seed + 1
+
+        return Processed(p, images, infotexts=infotexts,index_of_first_image=0)
