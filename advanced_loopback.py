@@ -242,6 +242,8 @@ class Script(scripts.Script):
                         p.seed = processed.seed + 1
                 p.denoising_strength = min(max(p.denoising_strength * denoising_strength_change_factor, 0.1), 1)
                 history.append(processed.images[0])
+                if state.interrupted:
+                    break
 
             grid = images.image_grid(history, rows=1)
             if opts.grid_save:
