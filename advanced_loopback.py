@@ -198,8 +198,8 @@ class Script(scripts.Script):
                                     p.seed = processed.seed + 1
                             p.prompt = ppos[multi_prompts_index]
                             p.negative_prompt = pneg[multi_prompts_index]
-                        print("Prompt :",p.prompt)
-                        print("Negative prompt :",p.negative_prompt)
+#                         print("Prompt :",p.prompt)
+#                         print("Negative prompt :",p.negative_prompt)
 
                 if use_first_image_colors:
                     p.color_corrections = [processing.setup_color_correction(original_image)]
