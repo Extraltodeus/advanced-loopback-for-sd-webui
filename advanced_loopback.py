@@ -188,14 +188,16 @@ class Script(scripts.Script):
                         try:
                             if same_seed_per_prompt:
                                 if not same_seed_always:
-                                    p.seed = processed.seed + 1
+                                    p.subseed = p.subseed + 1 if p.subseed_strength  > 0 else p.subseed
+                                    p.seed    = p.seed    + 1 if p.subseed_strength == 0 else p.seed
                             p.prompt = ppos[multi_prompts_index]
                             p.negative_prompt = pneg[multi_prompts_index]
                         except Exception as e:
                             multi_prompts_index = 0
                             if same_seed_per_prompt:
                                 if not same_seed_always:
-                                    p.seed = processed.seed + 1
+                                    p.subseed = p.subseed + 1 if p.subseed_strength  > 0 else p.subseed
+                                    p.seed    = p.seed    + 1 if p.subseed_strength == 0 else p.seed
                             p.prompt = ppos[multi_prompts_index]
                             p.negative_prompt = pneg[multi_prompts_index]
 #                         print("Prompt :",p.prompt)
@@ -239,7 +241,8 @@ class Script(scripts.Script):
                 p.init_images = [init_img]
                 if not same_seed_per_prompt:
                     if not same_seed_always:
-                        p.seed = processed.seed + 1
+                        p.subseed = p.subseed + 1 if p.subseed_strength  > 0 else p.subseed
+                        p.seed    = p.seed    + 1 if p.subseed_strength == 0 else p.seed
                 p.denoising_strength = min(max(p.denoising_strength * denoising_strength_change_factor, 0.1), 1)
                 history.append(processed.images[0])
                 if state.interrupted:
