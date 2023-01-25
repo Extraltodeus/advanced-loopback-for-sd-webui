@@ -21,7 +21,7 @@ class Script(scripts.Script):
 
     def ui(self, is_img2img):
         loops = gr.Number(minimum=1, step=1, label='Loops', value=4)
-        use_first_image_colors  = gr.Checkbox(label='Use first image colors (custom color correction)   ', value=True)
+        use_first_image_colors  = gr.Checkbox(label='Use first image colors (custom color correction)     ', value=False)
         denoising_strength_change_factor = gr.Slider(minimum=0.9, maximum=1.1, step=0.01, label='Denoising strength change factor (overridden if proportional used)', value=1)
         zoom_level = gr.Slider(minimum=1, maximum=1.1, step=0.001, label='Zoom level', value=1)
         with gr.Row():
@@ -32,9 +32,11 @@ class Script(scripts.Script):
             denoising_strength_last_image  = gr.Number(minimum=0, step=1, label='Denoising strength end   ',   value=4)
         denoising_strength_min  = gr.Slider(minimum=0.1, maximum=1, step=0.01, label='Denoising strength proportional change starting value   ', value=0.1)
         denoising_strength_max  = gr.Slider(minimum=0.1, maximum=1, step=0.01, label='Denoising strength proportional change ending value (0.1 = disabled)   ', value=0.1)
+        cfg_scale_min  = gr.Slider(minimum=0.1, maximum=30, step=0.1, label='CFG scale proportional change starting value   ', value=0.1)
+        cfg_scale_max  = gr.Slider(minimum=0.1, maximum=30, step=0.1, label='CFG scale proportional change ending value (0.1 = disabled)   ', value=0.1)
         saturation_per_image    = gr.Slider(minimum=0.99, maximum=1.01, step=0.001, label='Saturation enhancement per image   ', value=1)
         with gr.Row():
-            use_sine_variation_dns  = gr.Checkbox(label='Use sine denoising strength variation',      value=False)
+            use_sine_variation_dns  = gr.Checkbox(label='Use sine denoising strength variation (CFG will be scaled with it if the slider is > 0.1)',      value=True)
             phase_diff_denoising    = gr.Slider(minimum=0, maximum=1, step=0.05, label='Phase difference', value=0)
             amplify_sine_variation_denoise = gr.Slider(minimum=1, maximum=10, step=1, label='Denoising strength exponentiation     ', value=1)
         with gr.Row():
@@ -57,6 +59,8 @@ class Script(scripts.Script):
         denoising_strength_last_image,
         denoising_strength_min,
         denoising_strength_max,
+        cfg_scale_min,
+        cfg_scale_max,
         saturation_per_image,
         use_first_image_colors,
         use_sine_variation_dns,
@@ -94,6 +98,8 @@ class Script(scripts.Script):
     denoising_strength_last_image,
     denoising_strength_min,
     denoising_strength_max,
+    cfg_scale_min,
+    cfg_scale_max,
     saturation_per_image,
     use_first_image_colors,
     use_sine_variation_dns,
@@ -145,6 +151,8 @@ class Script(scripts.Script):
             'Denoising strength proportional change end image':denoising_strength_last_image,
             'Denoising strength proportional change starting value':denoising_strength_min,
             'Denoising strength proportional change ending value':denoising_strength_max,
+            'CFG min':cfg_scale_min,
+            'CFG max':cfg_scale_max,
             'use first image colors': use_first_image_colors,
             'Saturation enhancement per image':saturation_per_image,
             'Zoom level':zoom_level,
@@ -215,6 +223,14 @@ class Script(scripts.Script):
                         ds = remap_range(i+1,denoising_strength_first_image,denoising_strength_last_image,denoising_strength_min,denoising_strength_max)
                     p.denoising_strength = round(ds,3)
                     print("Denoising strength : "+str(p.denoising_strength))
+
+                if cfg_scale_max > 0.1 :
+                    if use_sine_variation_dns :
+                        cfgs = remap_range(get_sin_steps(i,amplify_sine_variation_denoise,phase_diff_denoising),0,1,cfg_scale_min,cfg_scale_max)
+                    else:
+                        cfgs = remap_range(i+1,denoising_strength_first_image,denoising_strength_last_image,cfg_scale_min,cfg_scale_max)
+                    p.cfg_scale = round(cfgs,2)
+                    print("CFG scale : "+str(p.cfg_scale))
 
                 processed = processing.process_images(p)
                 if zoom_level != 1:
