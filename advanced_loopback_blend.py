@@ -14,7 +14,7 @@ from math import sin, pi
 
 class Script(scripts.Script):
     def title(self):
-        return "Advanced loopback"
+        return "Advanced loopback blend"
 
     def show(self, is_img2img):
         return is_img2img
@@ -23,9 +23,10 @@ class Script(scripts.Script):
         loops = gr.Number(minimum=1, step=1, label='Loops', value=4)
         use_first_image_colors  = gr.Checkbox(label='Use first image colors (custom color correction)     ', value=False)
         denoising_strength_change_factor = gr.Slider(minimum=0.9, maximum=1.1, step=0.01, label='Denoising strength change factor (overridden if proportional used)', value=1)
-        zoom_level = gr.Slider(minimum=0, maximum=50, step=1, label='Zoom level     ', value=0)
-        zoom_blend = gr.Checkbox(label='Blend 50/50 with original when zoomed. Doesn\'t work with sine variation.', value=False)
-        # with gr.Row():
+        with gr.Row():
+            zoom_level = gr.Slider(minimum=0, maximum=50, step=1, label='Zoom level     ', value=0)
+            zoom_blend = gr.Checkbox(label='Blend 50/50 with original when zoomed. Doesn\'t work with sine variation.', value=False)
+            # zoom_refresh = gr.Slider(minimum=0, maximum=50, step=1, label='Refresh base image for blend every n iterations', value=0)
         #     direction_x = gr.Slider(minimum=-0.1, maximum=0.1, step=0.01, label='Direction X', value=0)
         #     direction_y = gr.Slider(minimum=-0.1, maximum=0.1, step=0.01, label='Direction Y', value=0)
         with gr.Row():
@@ -55,6 +56,7 @@ class Script(scripts.Script):
         denoising_strength_change_factor,
         zoom_level,
         zoom_blend,
+        # zoom_refresh,
         # direction_x,
         # direction_y,
         denoising_strength_first_image,
@@ -88,6 +90,7 @@ class Script(scripts.Script):
     denoising_strength_change_factor,
     zoom_level,
     zoom_blend,
+    # zoom_refresh,
     # direction_x,
     # direction_y,
     denoising_strength_first_image,
@@ -166,6 +169,7 @@ class Script(scripts.Script):
         state.job_count = loops * batch_count
 
         original_image = p.init_images[0].copy()
+        original_image_for_zoom = p.init_images[0].copy()
         if opts.img2img_color_correction:
             p.color_corrections = [processing.setup_color_correction(p.init_images[0])]
 
@@ -238,8 +242,10 @@ class Script(scripts.Script):
                     else:
                         processed.images[0] = self.zoom_into(processed.images[0], zoom_level)
                         if zoom_blend:
-                            original_image_zoomed = self.zoom_into(deepcopy(original_image), zoom_level*(n+1))
-                            processed.images[0] = Image.blend(original_image_zoomed, processed.images[0], alpha=0.5)
+                            # if zoom_refresh > 0 and i%zoom_refresh == 0:
+                            #     original_image_for_zoom = processed.images[0].copy()
+                            original_image_zoomed = self.zoom_into(original_image_for_zoom.copy(), zoom_level*(i+1))
+                            processed.images[0] = Image.blend(original_image_zoomed.copy().convert('RGB').resize(processed.images[0].size, Image.LANCZOS), processed.images[0].copy().convert('RGB'), alpha=0.5)
 
 
                 if initial_seed is None:
