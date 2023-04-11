@@ -2,8 +2,6 @@
 
 This script is made to be used with the [AUTOMATIC1111 webui](https://github.com/AUTOMATIC1111/stable-diffusion-webui).
 
-# NEW
-
 You can now set the CFG scale on scale with the denoising strength just by tweaking these sliders :
 ![image](https://user-images.githubusercontent.com/15731540/214673266-4c406822-44e8-480a-bfb8-03d528e174be.png)
 
